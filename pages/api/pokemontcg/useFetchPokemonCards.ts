@@ -14,20 +14,22 @@ export const useFetchPokemonCards = (
   const [error, setError] = useState();
 
   useEffect(() => {
-    fetch(`${apiUri}cards?q=${params}`, {
-      method: "GET",
-      headers,
-    })
-      .then((res) => {
-        return res.json();
+    if (params) {
+      fetch(`${apiUri}cards?q=${params}`, {
+        method: "GET",
+        headers,
       })
-      .then(({ data }) => {
-        setCards(data);
-        setLoading(false);
-      })
-      .catch((e) => {
-        setError(e);
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then(({ data }) => {
+          setCards(data);
+          setLoading(false);
+        })
+        .catch((e) => {
+          setError(e);
+        });
+    }
   }, [params]);
 
   return { cards, loading, error };

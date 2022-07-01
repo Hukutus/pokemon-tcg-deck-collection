@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "next": "12.2.0",
+    "pokemon-tcg-sdk-typescript": "^2.1.2-beta.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

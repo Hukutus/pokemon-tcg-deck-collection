@@ -1,29 +1,16 @@
 import { apiUri, headers } from "./parameters";
-import { PokemonCardFetchResponse } from "./types";
-import { useEffect, useState } from "react";
-import { Card } from "pokemon-tcg-sdk-typescript/dist/interfaces/card";
+import { useQuery } from "react-query";
+import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 
-export const useFetchPokemonCard = (id: string): PokemonCardFetchResponse => {
-  const [card, setCard] = useState<Card>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
+const fetchPokemonCard = (id: string): Promise<PokemonTCG.Card> => {
+  return fetch(`${apiUri}cards/${id}`, {
+    method: "GET",
+    headers,
+  })
+    .then((res) => res.json())
+    .then((res) => res?.data);
+};
 
-  useEffect(() => {
-    fetch(`${apiUri}cards/${id}`, {
-      method: "GET",
-      headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then(({ data }) => {
-        setCard(data);
-        setLoading(false);
-      })
-      .catch((e) => {
-        setError(e);
-      });
-  }, [id]);
-
-  return { card, loading, error };
+export const useFetchPokemonCard = (id: string) => {
+  return useQuery(["fetchPokemonCard", id], () => fetchPokemonCard(id));
 };

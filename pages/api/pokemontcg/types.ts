@@ -1,13 +1,18 @@
-import { Card } from "pokemon-tcg-sdk-typescript/dist/interfaces/card";
+import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 
-export type PokemonCardFetchResponse = {
+export type ResponseStatus = {
   loading: boolean;
   error: unknown;
-  card?: Card;
 };
 
-export type PokemonCardsFetchResponse = {
-  loading: boolean;
-  error: unknown;
-  cards: Card[];
+export type PokemonCardResponse = ResponseStatus & {
+  card?: PokemonTCG.Card;
+};
+
+export type PokemonCardsResponse = ResponseStatus & {
+  cards: PokemonTCG.Card[];
+};
+
+export type PokemonSetsResponse = ResponseStatus & {
+  sets: PokemonTCG.Set[];
 };

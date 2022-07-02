@@ -9,10 +9,12 @@ import {
   removeCard,
   selectCollection,
   TCollectionCard,
-} from "../../store/reducers/collection";
+} from "../store/reducers/collection";
 import { useDispatch, useSelector } from "react-redux";
-import { ComponentStyle } from "../types";
+import { ComponentStyle } from "../../pages/types";
 import { CollectionCard } from "./CollectionCard/CollectionCard";
+import { useParseTCGODeckList } from "../api/ptcgo/useParseTCGODeckList";
+import { solrockLunatone } from "../../mocks/ptcgoDecks";
 
 const styles: ComponentStyle = {
   container: {
@@ -30,7 +32,7 @@ export const CardList = () => {
   const { isLoading, isError, data: cards } = useFetchPokemonCards(params);
   const { cards: collectionCards } = useSelector(selectCollection);
   const dispatch = useDispatch();
-  console.log("Got cards", cards, collectionCards);
+  const parsedList = useParseTCGODeckList(solrockLunatone);
 
   const addToCollection = (card: PokemonTCG.Card | TCollectionCard) => {
     dispatch(addCard(card));
@@ -80,6 +82,21 @@ export const CardList = () => {
 
       <div style={styles.container}>
         {collectionCards?.map((card: TCollectionCard) => (
+          <CollectionCard
+            key={card.id}
+            card={card}
+            onRemove={() => removeFromCollection(card)}
+            onAdd={() => addToCollection(card)}
+            onDelete={() => deleteFromCollection(card)}
+          />
+        ))}
+        {!collectionCards?.length && <div>No collection!</div>}
+      </div>
+
+      <h2>PTCGO Deck Import</h2>
+
+      <div style={styles.container}>
+        {parsedList?.cards?.map((card) => (
           <CollectionCard
             key={card.id}
             card={card}

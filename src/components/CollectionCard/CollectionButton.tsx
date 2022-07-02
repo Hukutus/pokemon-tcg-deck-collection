@@ -1,4 +1,4 @@
-import { ComponentStyle } from "../../types";
+import { ComponentStyle } from "../../../pages/types";
 import { useMemo } from "react";
 
 const styles: ComponentStyle = {

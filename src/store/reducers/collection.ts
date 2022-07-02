@@ -5,16 +5,12 @@ import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 export type TCollectionDeck = {
   name: string;
   ptcgoList: string;
-  size: number; // Calculated size of the deck
+  amount: number;
+  cards: TCollectionCard[];
+  format?: "Standard" | "Expanded" | "Unlimited" | "GLC";
 
-  cards: {
-    // Cards in the deck grouped by id
-    id: string;
-    amount: number;
-  }[];
-
-  borrowed: {
-    // Cards that are either borrowed to this deck or from this deck
+  // WIP, not yet used
+  borrowed?: {
     id: string;
     deckName: string;
     target: "to" | "from";
@@ -28,7 +24,7 @@ export type TCollectionCard = {
     small: string;
     large: string;
   };
-  owned: number;
+  amount: number;
 };
 
 export interface CollectionState {
@@ -64,10 +60,10 @@ export const collectionSlice = createSlice({
           id,
           name,
           images,
-          owned: 1,
+          amount: 1,
         });
       } else {
-        state.value.cards[existingCardIndex].owned += 1;
+        state.value.cards[existingCardIndex].amount += 1;
       }
     },
     removeCard: (state, { payload }: PayloadAction<TCollectionCard>) => {
@@ -81,15 +77,15 @@ export const collectionSlice = createSlice({
         return;
       }
 
-      if (state.value.cards[existingCardIndex].owned <= 1) {
+      if (state.value.cards[existingCardIndex].amount <= 1) {
         // Last card being removed
         // state.value.cards.splice(existingCardIndex, 1);
-        state.value.cards[existingCardIndex].owned = 0;
+        state.value.cards[existingCardIndex].amount = 0;
         return;
       }
 
       // Subtract a card
-      state.value.cards[existingCardIndex].owned -= 1;
+      state.value.cards[existingCardIndex].amount -= 1;
     },
     deleteCard: (state, { payload }: PayloadAction<TCollectionCard>) => {
       const { id } = payload;

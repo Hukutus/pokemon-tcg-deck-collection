@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
-
-import { useFetchPokemonCards } from "../api/pokemontcg/useFetchPokemonCards";
-import { CardImage } from "./CardImage";
+import { CardImage } from "./CollectionCard/CardImage";
 import {
   addCard,
   deleteCard,
@@ -15,6 +13,7 @@ import { ComponentStyle } from "../../pages/types";
 import { CollectionCard } from "./CollectionCard/CollectionCard";
 import { useParseTCGODeckList } from "../api/ptcgo/useParseTCGODeckList";
 import { solrockLunatone } from "../../mocks/ptcgoDecks";
+import { selectCards } from "../store/reducers/cards";
 
 const styles: ComponentStyle = {
   container: {
@@ -25,11 +24,9 @@ const styles: ComponentStyle = {
 };
 
 export const CardList = () => {
-  const [inputValue, setInputValue] = useState(
-    "set.name:generations subtypes:mega"
-  );
-  const [params, setParams] = useState("");
-  const { isLoading, isError, data: cards } = useFetchPokemonCards(params);
+  const [inputValue, setInputValue] = useState("");
+  const cards = useSelector(selectCards);
+  console.log("cards", cards);
   const { cards: collectionCards } = useSelector(selectCollection);
   const dispatch = useDispatch();
   const parsedList = useParseTCGODeckList(solrockLunatone);
@@ -60,12 +57,12 @@ export const CardList = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <button onClick={() => setParams(inputValue)} disabled={isLoading}>
+      {/*<button onClick={() => setParams(inputValue)} disabled={isLoading}>
         Get cards
       </button>
 
       {isLoading && <div>Loading...</div>}
-      {isError && <div>Error!</div>}
+      {isError && <div>Error!</div>}*/}
 
       <div style={styles.container}>
         {cards?.map((card: PokemonTCG.Card) => (
@@ -75,7 +72,7 @@ export const CardList = () => {
             onClick={() => addToCollection(card)}
           />
         ))}
-        {!isLoading && !cards?.length && <div>No results!</div>}
+        {!cards?.length && <div>No results!</div>}
       </div>
 
       <h2>Your collection</h2>

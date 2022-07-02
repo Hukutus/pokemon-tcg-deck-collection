@@ -11,6 +11,7 @@ import thunk from "redux-thunk";
 import { default as sets } from "./reducers/sets";
 import { default as cards } from "./reducers/cards";
 import { default as collection } from "./reducers/collection";
+import settings from "./reducers/settings";
 
 const persistConfig = {
   key: "root",
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   sets,
   cards,
   collection,
+  settings,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

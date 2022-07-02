@@ -16,3 +16,7 @@ export type PokemonCardsResponse = ResponseStatus & {
 export type PokemonSetsResponse = ResponseStatus & {
   sets: PokemonTCG.Set[];
 };
+
+export type PokemonFetchParameters = PokemonTCG.Parameter & {
+  select?: string;
+};

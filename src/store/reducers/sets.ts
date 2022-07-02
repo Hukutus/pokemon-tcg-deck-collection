@@ -16,29 +16,16 @@ export const setsSlice = createSlice({
   name: "sets",
   initialState,
   reducers: {
-    update: (state, { payload }: PayloadAction<PokemonTCG.Set[]>) => {
+    updateSetStore: (state, { payload }: PayloadAction<PokemonTCG.Set[]>) => {
       state.value = payload;
     },
-    add: (state, { payload }: PayloadAction<PokemonTCG.Set>) => {
-      if (!state.value) {
-        state.value = [payload];
-        return;
-      }
-
-      state.value.push(payload);
-    },
-    remove: (state, { payload }: PayloadAction<PokemonTCG.Set>) => {
-      if (!state.value?.length) {
-        state.value = [];
-        return;
-      }
-
-      state.value = state.value.filter((set) => set.id === payload.id);
+    clearSetStore: (state) => {
+      state.value = undefined;
     },
   },
 });
 
-export const { update, add, remove } = setsSlice.actions;
+export const { updateSetStore, clearSetStore } = setsSlice.actions;
 
 export const selectSets = (state: RootState) => state.sets.value;
 

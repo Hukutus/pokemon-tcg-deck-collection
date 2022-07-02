@@ -3,8 +3,7 @@ import { useQuery } from "react-query";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 
 const fetchPokemonCard = (id: string): Promise<PokemonTCG.Card> => {
-  return fetch(`${apiUri}cards/${id}`, {
-    method: "GET",
+  return fetch(`${apiUri}/cards/${id}`, {
     headers,
   })
     .then((res) => res.json())

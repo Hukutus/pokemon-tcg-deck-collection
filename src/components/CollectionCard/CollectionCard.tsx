@@ -1,6 +1,6 @@
 import { TCollectionCard as TCollectionCard } from "../../store/reducers/collection";
 import { ComponentStyle } from "../../../pages/types";
-import { CardImage } from "../CardImage";
+import { CardImage } from "./CardImage";
 import { CollectionButton } from "./CollectionButton";
 
 const styles: ComponentStyle = {

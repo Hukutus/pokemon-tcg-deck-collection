@@ -1,7 +1,7 @@
 import { Card } from "pokemon-tcg-sdk-typescript/dist/interfaces/card";
 import Image from "next/image";
-import { TCollectionCard } from "../store/reducers/collection";
-import { ComponentStyle } from "../../pages/types";
+import { TCollectionCard } from "../../store/reducers/collection";
+import { ComponentStyle } from "../../../pages/types";
 
 const aspectRatio = 63.5 / 88.9;
 

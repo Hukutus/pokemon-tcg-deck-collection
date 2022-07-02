@@ -1,18 +1,20 @@
 import { useState } from "react";
-import { Properties } from "csstype";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 
 import { useFetchPokemonCards } from "../api/pokemontcg/useFetchPokemonCards";
 import { CardImage } from "./CardImage";
 import {
   addCard,
-  CollectionCard,
+  deleteCard,
   removeCard,
   selectCollection,
+  TCollectionCard,
 } from "../../store/reducers/collection";
 import { useDispatch, useSelector } from "react-redux";
+import { ComponentStyle } from "../types";
+import { CollectionCard } from "./CollectionCard/CollectionCard";
 
-const styles: { [key: string]: Properties<string | number> } = {
+const styles: ComponentStyle = {
   container: {
     display: "flex",
     flexWrap: "wrap",
@@ -30,12 +32,22 @@ export const CardList = () => {
   const dispatch = useDispatch();
   console.log("Got cards", cards, collectionCards);
 
-  const addToCollection = (card: PokemonTCG.Card) => {
+  const addToCollection = (card: PokemonTCG.Card | TCollectionCard) => {
     dispatch(addCard(card));
   };
 
-  const removeFromCollection = (card: CollectionCard) => {
+  const removeFromCollection = (card: TCollectionCard) => {
     dispatch(removeCard(card));
+  };
+
+  const deleteFromCollection = (card: TCollectionCard) => {
+    const confirmed = confirm(
+      "Are you sure you want to delete this card from your collection?"
+    );
+
+    if (confirmed) {
+      dispatch(deleteCard(card));
+    }
   };
 
   return (
@@ -67,14 +79,14 @@ export const CardList = () => {
       <h2>Your collection</h2>
 
       <div style={styles.container}>
-        {collectionCards?.map((card: CollectionCard) => (
-          <div
-            style={{ display: "flex", flexDirection: "column" }}
+        {collectionCards?.map((card: TCollectionCard) => (
+          <CollectionCard
             key={card.id}
-          >
-            <CardImage card={card} onClick={() => removeFromCollection(card)} />
-            <div>Owned: {card.owned}</div>
-          </div>
+            card={card}
+            onRemove={() => removeFromCollection(card)}
+            onAdd={() => addToCollection(card)}
+            onDelete={() => deleteFromCollection(card)}
+          />
         ))}
         {!collectionCards?.length && <div>No collection!</div>}
       </div>

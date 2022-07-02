@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 
-export type CollectionDeck = {
+export type TCollectionDeck = {
   name: string;
   ptcgoList: string;
   size: number; // Calculated size of the deck
@@ -21,17 +21,20 @@ export type CollectionDeck = {
   }[];
 };
 
-export type CollectionCard = {
+export type TCollectionCard = {
   id: string;
   name: string;
-  image: string;
+  images: {
+    small: string;
+    large: string;
+  };
   owned: number;
 };
 
 export interface CollectionState {
   value: {
-    cards: CollectionCard[];
-    decks: CollectionDeck[];
+    cards: TCollectionCard[];
+    decks: TCollectionDeck[];
   };
   status: "idle" | "loading" | "failed";
 }
@@ -48,7 +51,10 @@ export const collectionSlice = createSlice({
   name: "collection",
   initialState,
   reducers: {
-    addCard: (state, { payload }: PayloadAction<PokemonTCG.Card>) => {
+    addCard: (
+      state,
+      { payload }: PayloadAction<PokemonTCG.Card | TCollectionCard>
+    ) => {
       const { id, name, images } = payload;
       const existingCardIndex = state.value.cards.findIndex(
         (card) => card.id === id
@@ -57,14 +63,14 @@ export const collectionSlice = createSlice({
         state.value.cards.push({
           id,
           name,
-          image: images.small,
+          images,
           owned: 1,
         });
       } else {
         state.value.cards[existingCardIndex].owned += 1;
       }
     },
-    removeCard: (state, { payload }: PayloadAction<CollectionCard>) => {
+    removeCard: (state, { payload }: PayloadAction<TCollectionCard>) => {
       const { id } = payload;
       const existingCardIndex = state.value.cards.findIndex(
         (card) => card.id === id
@@ -75,19 +81,33 @@ export const collectionSlice = createSlice({
         return;
       }
 
-      if (state.value.cards[existingCardIndex].owned === 1) {
+      if (state.value.cards[existingCardIndex].owned <= 1) {
         // Last card being removed
-        state.value.cards.splice(existingCardIndex, 1);
+        // state.value.cards.splice(existingCardIndex, 1);
+        state.value.cards[existingCardIndex].owned = 0;
         return;
       }
 
       // Subtract a card
       state.value.cards[existingCardIndex].owned -= 1;
     },
+    deleteCard: (state, { payload }: PayloadAction<TCollectionCard>) => {
+      const { id } = payload;
+      const existingCardIndex = state.value.cards.findIndex(
+        (card) => card.id === id
+      );
+
+      if (existingCardIndex === -1) {
+        // Not in collection
+        return;
+      }
+
+      state.value.cards.splice(existingCardIndex, 1);
+    },
   },
 });
 
-export const { addCard, removeCard } = collectionSlice.actions;
+export const { addCard, removeCard, deleteCard } = collectionSlice.actions;
 
 export const selectCollection = (state: RootState) => state.collection.value;
 export const selectCollectionCards = (state: RootState) =>

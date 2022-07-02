@@ -76,7 +76,7 @@ export const CardList = () => {
             <div>Owned: {card.owned}</div>
           </div>
         ))}
-        {!isLoading && !cards?.length && <div>No results!</div>}
+        {!collectionCards?.length && <div>No collection!</div>}
       </div>
     </>
   );

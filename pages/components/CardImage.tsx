@@ -22,7 +22,7 @@ export const CardImage = ({ card, onClick }: Props) => {
       }}
     >
       <Image
-        src={card.images?.small || (card as unknown as { image: string }).image}
+        src={card.images?.small}
         alt={card.name}
         height={200}
         width={200 * aspectRatio}

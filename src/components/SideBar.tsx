@@ -1,4 +1,4 @@
-import { ComponentStyle } from "../../pages/types";
+import { ComponentStyle } from "../types";
 
 const styles: ComponentStyle = {
   container: {

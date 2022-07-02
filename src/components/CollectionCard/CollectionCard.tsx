@@ -1,5 +1,5 @@
 import { TCollectionCard as TCollectionCard } from "../../store/reducers/collection";
-import { ComponentStyle } from "../../../pages/types";
+import { ComponentStyle } from "../../types";
 import { CardImage } from "./CardImage";
 import { CollectionButton } from "./CollectionButton";
 
@@ -33,11 +33,7 @@ export const CollectionCard = ({ card, onAdd, onRemove, onDelete }: Props) => {
     <div style={styles.container}>
       <CardImage card={card} />
       <div style={styles.buttonList}>
-        <CollectionButton
-          type="remove"
-          onClick={onRemove}
-          disabled={card.amount === 0}
-        />
+        <CollectionButton type="remove" onClick={onRemove} />
         <div style={styles.textPadding}>{card.amount}</div>
         <CollectionButton type="add" onClick={onAdd} />
         <div style={styles.textPadding}>/</div>

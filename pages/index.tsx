@@ -2,16 +2,16 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { CardList } from "../src/components/CardList";
-import { SideBar } from "../src/components/SideBar";
-// import {useClearCardStorage, useInitCardStore} from "../src/store/useInitCardStore";
+// import { SideBar } from "../src/components/SideBar";
+import { useInitCardStore } from "../src/store/useInitCardStore";
 
 const Home: NextPage = () => {
   // useClearCardStorage();
-  // useInitCardStore();
+  useInitCardStore();
 
   return (
     <div className={styles.container}>
-      <SideBar />
+      {/*<SideBar />*/}
 
       <main className={styles.main}>
         <Head>

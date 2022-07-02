@@ -1,7 +1,7 @@
 import { Card } from "pokemon-tcg-sdk-typescript/dist/interfaces/card";
 import Image from "next/image";
 import { TCollectionCard } from "../../store/reducers/collection";
-import { ComponentStyle } from "../../../pages/types";
+import { ComponentStyle } from "../../types";
 
 const aspectRatio = 63.5 / 88.9;
 
@@ -38,6 +38,10 @@ export const CardImage = ({ card, onClick }: Props) => {
     return <></>;
   }
 
+  const imageSrc = card.images
+    ? card.images.small
+    : `https://images.pokemontcg.io/${card.id.split("-").join("/")}.png`;
+
   return (
     <div
       style={{ padding: "5px" }}
@@ -45,9 +49,9 @@ export const CardImage = ({ card, onClick }: Props) => {
         if (onClick) onClick();
       }}
     >
-      {card.images?.small ? (
+      {imageSrc ? (
         <Image
-          src={card.images?.small}
+          src={imageSrc}
           alt={card.name}
           height={200}
           width={200 * aspectRatio}

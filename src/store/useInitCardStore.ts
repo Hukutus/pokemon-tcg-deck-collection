@@ -6,7 +6,7 @@ import { clearCardStore, selectCards, updateCardStore } from "./reducers/cards";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 import { clearSetStore, selectSets, updateSetStore } from "./reducers/sets";
 
-const initCardsQuery = "set.legalities.expanded:Legal";
+const initCardsQuery = "set.id:pgo";
 const initCardsSelect = "id,name,supertype,subtypes,types,set.id";
 const initSetsQuery = "legalities.expanded:Legal";
 
@@ -23,7 +23,8 @@ export const useInitCardStore = () => {
   console.log("Init check", cards, sets);
 
   useEffect(() => {
-    if (!cards) {
+    console.log("UseEffect", cards?.length);
+    if (!cards?.length) {
       fetchPokemonCards({ q: initCardsQuery, select: initCardsSelect }).then(
         (cards) => {
           console.log("Card fetch success", cards);
@@ -34,7 +35,7 @@ export const useInitCardStore = () => {
   }, [dispatch, cards]);
 
   useEffect(() => {
-    if (!sets) {
+    if (!sets?.length) {
       fetchPokemonSets({ q: initSetsQuery }).then((sets) => {
         console.log("Sets fetch success", sets);
         dispatch(updateSetStore(sets as PokemonTCG.Set[]));

@@ -77,12 +77,12 @@ export const collectionSlice = createSlice({
         return;
       }
 
-      if (state.value.cards[existingCardIndex].amount <= 1) {
+      /*if (state.value.cards[existingCardIndex].amount <= 1) {
         // Last card being removed
         // state.value.cards.splice(existingCardIndex, 1);
         state.value.cards[existingCardIndex].amount = 0;
         return;
-      }
+      }*/
 
       // Subtract a card
       state.value.cards[existingCardIndex].amount -= 1;

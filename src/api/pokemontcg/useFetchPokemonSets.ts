@@ -16,9 +16,6 @@ export const fetchPokemonSets = (
     "id,name,legalities,ptcgoCode,releaseDate,images"
   );
 
-  // Only get 100 results max by default
-  url.searchParams.set("pageSize", "100");
-
   Object.entries(params).forEach(([key, value]) => {
     if (value) {
       url.searchParams.set(key, value);
@@ -29,7 +26,5 @@ export const fetchPokemonSets = (
 };
 
 export const useFetchPokemonSets = (params: PokemonFetchParameters) => {
-  return useQuery(["fetchPokemonSets", params], () =>
-    params.q ? fetchPokemonSets(params) : []
-  );
+  return useQuery(["fetchPokemonSets", params], () => fetchPokemonSets(params));
 };

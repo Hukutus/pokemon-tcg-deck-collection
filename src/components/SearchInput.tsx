@@ -18,7 +18,7 @@ export const SearchInput = ({ onValueChange, style = {} }: Props) => {
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      if (searchTerm.length > 1) onValueChange(searchTerm);
+      if (searchTerm.length) onValueChange(searchTerm);
     }, 1000);
 
     return () => clearTimeout(delayDebounce);

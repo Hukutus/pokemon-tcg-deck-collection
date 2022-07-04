@@ -45,7 +45,9 @@ export const CardSearch = () => {
       <div style={styles.container}>
         {loading ? "Loading..." : ""}
         {!searchTerm?.length ? "Please write a search term!" : ""}
-        {!loading && !cards?.length ? "No results for given search term!" : ""}
+        {!loading && searchTerm?.length && !cards?.length
+          ? "No results for given search term!"
+          : ""}
       </div>
 
       {cards?.map((card: PokemonTCG.Card) => (

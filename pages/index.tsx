@@ -3,12 +3,8 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { CardList } from "../src/components/CardList";
 // import { SideBar } from "../src/components/SideBar";
-import { useInitCardStore } from "../src/store/useInitCardStore";
 
 const Home: NextPage = () => {
-  // useClearCardStorage();
-  useInitCardStore();
-
   return (
     <div className={styles.container}>
       {/*<SideBar />*/}

@@ -51,15 +51,13 @@ export const collectionSlice = createSlice({
       state,
       { payload }: PayloadAction<PokemonTCG.Card | TCollectionCard>
     ) => {
-      const { id, name, images } = payload;
+      const card = payload;
       const existingCardIndex = state.value.cards.findIndex(
-        (card) => card.id === id
+        (existingCard) => card.id === existingCard.id
       );
       if (existingCardIndex === -1) {
         state.value.cards.push({
-          id,
-          name,
-          images,
+          ...card,
           amount: 1,
         });
       } else {

@@ -2,18 +2,22 @@ import { useQuery } from "react-query";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 
 import { apiUri } from "./parameters";
-import { paginatedFetch } from "./paginatedFetch";
+import { pokemonApiFetch } from "./fetchFn";
 import { PokemonFetchParameters } from "./types";
 
 export const fetchPokemonSets = (
   params: PokemonFetchParameters
 ): Promise<PokemonTCG.Set[]> => {
   const url = new URL(`${apiUri}/sets`);
+
   // Set select by default to include only the values used
   url.searchParams.set(
     "select",
     "id,name,legalities,ptcgoCode,releaseDate,images"
   );
+
+  // Only get 100 results max by default
+  url.searchParams.set("pageSize", "100");
 
   Object.entries(params).forEach(([key, value]) => {
     if (value) {
@@ -21,7 +25,7 @@ export const fetchPokemonSets = (
     }
   });
 
-  return paginatedFetch(url);
+  return pokemonApiFetch(url);
 };
 
 export const useFetchPokemonSets = (params: PokemonFetchParameters) => {

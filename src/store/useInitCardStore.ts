@@ -20,14 +20,11 @@ export const useInitCardStore = () => {
   const dispatch = useDispatch();
   const cards = useSelector(selectCards);
   const sets = useSelector(selectSets);
-  console.log("Init check", cards, sets);
 
   useEffect(() => {
-    console.log("UseEffect", cards?.length);
     if (!cards?.length) {
       fetchPokemonCards({ q: initCardsQuery, select: initCardsSelect }).then(
         (cards) => {
-          console.log("Card fetch success", cards);
           dispatch(updateCardStore(cards as PokemonTCG.Card[]));
         }
       );
@@ -37,7 +34,6 @@ export const useInitCardStore = () => {
   useEffect(() => {
     if (!sets?.length) {
       fetchPokemonSets({ q: initSetsQuery }).then((sets) => {
-        console.log("Sets fetch success", sets);
         dispatch(updateSetStore(sets as PokemonTCG.Set[]));
       });
     }

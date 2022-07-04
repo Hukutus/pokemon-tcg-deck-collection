@@ -1,6 +1,4 @@
-import { useMemo, useState } from "react";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
-import { CardImage } from "./CollectionCard/CardImage";
 import {
   addCard,
   deleteCard,
@@ -13,7 +11,7 @@ import { ComponentStyle } from "../types";
 import { CollectionCard } from "./CollectionCard/CollectionCard";
 import { useParseTCGODeckList } from "../api/ptcgo/useParseTCGODeckList";
 import { solrockLunatone } from "../../mocks/ptcgoDecks";
-import { selectCards } from "../store/reducers/cards";
+import { CardSearch } from "./CardSearch";
 
 const styles: ComponentStyle = {
   container: {
@@ -24,8 +22,6 @@ const styles: ComponentStyle = {
 };
 
 export const CardList = () => {
-  const [inputValue, setInputValue] = useState("");
-  const cards = useSelector(selectCards);
   const { cards: collectionCards } = useSelector(selectCollection);
   const dispatch = useDispatch();
   const parsedList = useParseTCGODeckList(solrockLunatone);
@@ -48,45 +44,11 @@ export const CardList = () => {
     }
   };
 
-  const filteredCards = useMemo(() => {
-    if (!cards) {
-      return [];
-    }
-
-    if (inputValue?.length < 2) {
-      return cards;
-    }
-
-    return cards.filter(
-      (card) => card.name.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
-    );
-  }, [cards, inputValue]);
-
   return (
     <>
       <h2>Card database</h2>
 
-      <input
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-      {/*<button onClick={() => setParams(inputValue)} disabled={isLoading}>
-        Get cards
-      </button>
-
-      {isLoading && <div>Loading...</div>}
-      {isError && <div>Error!</div>}*/}
-
-      <div style={styles.container}>
-        {filteredCards?.map((card: PokemonTCG.Card) => (
-          <CardImage
-            key={card.id}
-            card={card}
-            onClick={() => addToCollection(card)}
-          />
-        ))}
-        {!cards?.length && <div>No results!</div>}
-      </div>
+      <CardSearch />
 
       <h2>Your collection</h2>
 

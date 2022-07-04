@@ -1,11 +1,18 @@
 import { headers } from "./parameters";
 
+export const pokemonApiFetch = <T>(url: URL): Promise<T[]> => {
+  return fetch(url, { headers })
+    .then((res) => res.json())
+    .then((res) => {
+      return res.data as T[];
+    });
+};
+
 export const paginatedFetch = <T>(
   url: URL,
   page = 1,
   prevData: T[] = []
 ): Promise<T[]> => {
-  url.searchParams.set("page", page.toString());
   return fetch(url, { headers })
     .then((res) => res.json())
     .then((res) => {
